@@ -7,6 +7,11 @@ struct Unit {
     base_value: f32,
 }
 
+struct Config {
+    units: f32,
+    unit_code: String,
+}
+
 fn main() {
 
     // init
@@ -26,42 +31,34 @@ fn main() {
 
     // user input
     let args: Vec<String> = env::args().collect();
-    let distance: f32 = (&args[1]).parse().expect("Please enter a number!");
-    let unit_code  = &args[2];
+    let config = parse_config(&args);
 
-    let source_unit = match unit_map.get(&unit_code[..]) {
+    let source_unit = match unit_map.get(&config.unit_code[..]) {
         Some(&u) => u,
         None => {
-            println!("Unsupported unit '{}'. Aborting.", &unit_code);       
+            println!("Unsupported unit '{}'. Aborting.", config.unit_code);       
             return;
         }
     };
 
    // results
-    println!("\n{}{}=", distance, source_unit.label);
+    println!("\n{}{}=", config.units, config.unit_code);
 
     for target_unit in units.iter() {
         if target_unit.label == source_unit.label { continue; }
         println!("\t{}{}", 
-                 convert(distance, source_unit.base_value, target_unit.base_value),
+                 convert(&config, &source_unit, &target_unit),
                  target_unit.label);
     }
 }
 
-//fn get_user_input(prompt: &str) -> String {
-//    if prompt.trim() != "" {
-//        println!("{}", prompt);
-//    }
-//
-//    let mut input = String::new();
-//
-//    io::stdin()
-//        .read_line(&mut input)
-//        .expect("Failed to read input");
-//
-//    input
-//} 
+fn parse_config(args: &[String]) -> Config {
+    let units: f32 = (&args[1]).parse().expect("Please enter a number!");
+    let unit_code = args[2].clone();
 
-fn convert(distance: f32, source: f32, target: f32) -> f32 {
-    (distance * source) / target
+    Config { units, unit_code }
+}
+
+fn convert(config: &Config, source: &Unit, target: &Unit) -> f32 {
+    (config.units * source.base_value) / target.base_value
 }
