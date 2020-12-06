@@ -3,34 +3,36 @@ use std::io;
 fn main() {
     println!("Please enter the sequence size:");
 
-    let mut size = String::new();
+    let mut n = String::new();
 
     io::stdin()
-        .read_line(&mut size)
-        .expect("Failed to read size.");
+        .read_line(&mut n)
+        .expect("Failed to read n.");
 
-    let size: u32 = size.trim().parse().expect("Input number!");
+    let n: u32 = n.trim().parse().expect("Input number!");
 
-    println!("Generating sequence of {} fibonacci numbers:", size);
+    let sequence = fibo(n);
 
-    fibo(size);
+    for (i, result) in sequence.iter().enumerate() {
+        println!("fibo({}) -> {}", i, result);
+    }
 }
 
-// TODO: Let fibo generate a list; optimize
-fn fibo(n: u32) {
+fn fibo(n: u32) -> Vec<u32> {
+    let mut results = Vec::new();
     let mut a = 0;
     let mut b = 1;
 
     for i in 0..n {
-        if i == 0 {
-            println!("{}", a);
-        } else if i == 1 {
-            println!("{}", b);
+        if i < 2 { 
+            results.push(i);
         } else {
             let temp = a + b;
             a = b;
             b = temp;
-            println!("{}", temp);
+            results.push(b);
         }
     }
+
+    results
 }
