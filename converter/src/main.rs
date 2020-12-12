@@ -14,14 +14,10 @@ fn main() {
                 process::exit(1);
             });
 
-   // results
-    println!("\n{}{}=", source_distance.n, source_distance.unit.code);
-
+    println!("\n{} =", source_distance);
     for target_unit in config.units.iter() {
-        if target_unit.code == source_distance.unit.code { continue; }
-        
-        let target_distance = source_distance.convert_to(target_unit);
+        if target_unit.is_same_as(source_distance.unit) { continue; }
 
-        println!("\t{}{}", target_distance.n, target_distance.unit.code);
+        println!("\t{}", source_distance.convert_to(target_unit));
     }
 }
