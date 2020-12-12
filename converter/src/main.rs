@@ -20,9 +20,7 @@ fn main() {
     for target_unit in config.units.iter() {
         if target_unit.code == source_distance.unit.code { continue; }
         
-        // TODO: change to 
-        // let target_distance = source_distance.convert_to(target_unit);
-        let target_distance = target_unit.convert(&source_distance);
+        let target_distance = source_distance.convert_to(target_unit);
 
         println!("\t{}{}", target_distance.n, target_distance.unit.code);
     }
