@@ -23,8 +23,11 @@ impl Distance<'_> {
         args.next(); // program name
 
         let n: f32 = match args.next() {
-            Some(arg) => arg.parse().unwrap(),
-            None => return Err("Didn't get number of units.")
+            Some(arg) => match arg.parse() {
+                Ok(n) => n,
+                Err(_) => return Err("Please enter a valid number of units."),
+            },
+            None => return Err("Didn't get number of units."),
         };
 
         let unit_code = match args.next() {
