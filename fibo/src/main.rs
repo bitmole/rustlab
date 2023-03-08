@@ -16,6 +16,9 @@ fn main() {
     for (i, result) in sequence.iter().enumerate() {
         println!("fibo({}) -> {}", i, result);
     }
+
+    println!("Recursive:");
+    println!("fibo({}) -> {}", n, fibo_recur(n));
 }
 
 fn fibo(n: u32) -> Vec<u32> {
@@ -35,4 +38,13 @@ fn fibo(n: u32) -> Vec<u32> {
     }
 
     results
+}
+
+// TODO: implement tail recursion
+fn fibo_recur(n: u32) -> u32 {
+    if n < 2 {
+        n
+    } else {
+        fibo_recur(n - 1) + fibo_recur(n - 2)
+    }
 }
